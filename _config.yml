@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Kengran Yang 杨铿然"
+title                    : "Kengran Yang (杨铿然)"
 title_separator          : "-"
 name                     : &name "Kengran Yang"
 description              : &description "Computational Materials Science PhD @Princeton University"
@@ -102,7 +102,7 @@ author:
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         :
+  linkedin         : "https://www.linkedin.com/in/kengran-yang/"
   orcid            :
   pinterest        :
   soundcloud       :
