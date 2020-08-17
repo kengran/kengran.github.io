@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "academicpages is a ready-to-fork GitHub Pages template for academic personal websites"
+title: "Welcome to the personal website of Kengran Yang!"
 excerpt: "About me"
 author_profile: true
 redirect_from:
@@ -10,9 +10,8 @@ redirect_from:
 
 Welcome to the personal website of Kengran Yang!
 
-
-==========
 below are template contents:
+======
 
 Getting started
 ======
