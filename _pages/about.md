@@ -8,10 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-Testing
-
-below are template contents:
-======
+This site is under construction..
 
 
 Site-wide configuration
