@@ -8,4 +8,4 @@ redirect_from:
   - /about.html
 ---
 
-This site is under construction..
+Hello! I am a materials scientist by training, focusing on modeling of cementitious materials at sub-micrometer scale. Here you can find contents about my research in addition to my publications (in Blog Posts) and my CV.
