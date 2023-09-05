@@ -9,4 +9,4 @@ redirect_from:
 
 {% include base_path %}
 
-CV can be downloaded [here](http://kengran.github.io/files/cv-kengran-yang-jun2022.pdf)
+CV can be downloaded [here](http://kengran.github.io/files/cv_kengran_yang-sep2023.pdf)
