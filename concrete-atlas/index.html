@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concrete Atlas · Mix explorer</title>
+<link rel="stylesheet" href="style.css"><script defer src="app.js"></script>
+</head>
+<body>
+<header><div class="shell mast"><div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>Concrete Atlas</div><span class="mast-note">Materials research</span></div></header>
+<nav aria-label="Studies"><div class="shell tabs"><button id="tab-a" aria-pressed="true">Alkali-activated slag</button><button id="tab-b" aria-pressed="false">Blended cement</button></div></nav>
+<main class="shell">
+<div class="intro"><p class="kicker" id="kind"></p><h1 id="title"></h1><p id="summary"></p></div>
+<div class="modes" id="aas-modes" role="group" aria-label="AAS workspace">
+<button id="find-mode" aria-controls="find-view" aria-pressed="true">Find mixes</button>
+<button id="recipe-mode" aria-controls="recipe-view" aria-pressed="false">Adjust a recipe</button>
+</div>
+<div class="modes" id="blended-modes" role="group" aria-label="Blended cement workspace" hidden>
+<button id="measure-mode" aria-controls="find-view" aria-pressed="true">Explore measurements</button>
+<button id="performance-mode" aria-controls="performance-view" aria-pressed="false">Model performance</button>
+</div>
+<div id="find-view">
+<div class="metrics" id="metrics" aria-live="polite"></div>
+<section class="workspace" aria-label="Study explorer">
+<div class="card plot-card"><div class="card-head"><h2 id="plot-title"></h2><div class="legend" id="legend"></div></div><div class="plotbox"><canvas id="plot" role="img" aria-label="Scatter plot of filtered results. The data are available in the table below."></canvas><div id="empty"></div></div><div class="plot-foot" id="plot-note"></div></div>
+<aside class="card filters"><div class="card-head"><h2 id="filter-heading">Find mixes</h2><button class="text-btn" id="reset">Reset</button></div><div class="fields" id="fields"></div></aside>
+</section>
+<section class="card table-card"><div class="card-head"><h2 id="table-title"></h2><button class="slim" id="compare" hidden>Compare pinned mixes</button></div><p class="strength-note" id="strength-note" hidden></p><div class="scroll"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><div class="pager"><span id="page-info"></span><div><button class="slim" id="prev">Previous</button><button class="slim" id="next">Next</button></div></div></section>
+</div>
+<section id="recipe-view" hidden aria-label="Recipe predictions">
+<div id="recipe-metrics" class="metrics" aria-live="polite"></div>
+<div class="workspace recipe-workspace">
+<section class="card plot-card"><div class="card-head"><h2>Strength by curing age</h2><span class="legend">Compressive strength (MPa)</span></div>
+<div class="plotbox"><canvas id="recipe-plot" role="img" aria-describedby="recipe-model-note" aria-label="Strength versus curing age. Values are listed in the predictions table."></canvas><div id="recipe-status" role="status"></div></div>
+<div class="plot-foot">
+<div id="recipe-key"><span class="key-mean">Current recipe</span><span class="key-range">Range across 10 fits</span><span class="key-base">Starting recipe</span></div>
+<p id="recipe-model-note">Both curves show compressive strength predicted by the Gaussian process regression (GPR) model, averaged across ten fits.</p>
+</div></section>
+<aside class="card filters"><div class="card-head"><h2>Recipe inputs</h2><button id="reset-recipe" class="text-btn">Reset</button></div>
+<div class="recipe-fields"><p id="recipe-origin"></p><form id="recipe-form">
+<div class="recipe-grid">
+<label>Curing age (days)<input id="recipe-age" type="number" required step="any" min="1" max="180" value="28"><small>1–180 days</small></label>
+<label>Na₂O dosage (% of slag mass)<input id="recipe-na" type="number" required step="any" min="1" max="18" value="5"><small>1–18%</small></label>
+<label>Silicate modulus (Ms)<input id="recipe-ms" type="number" required step="any" min="0" max="3.5" value="1"><small>0–3.5</small></label>
+<label>Water/binder ratio<input id="recipe-wb" type="number" required step="any" min="0.2" max="0.75" value="0.4"><small>0.20–0.75</small></label>
+<label>Slag reactivity (dataset scale)<input id="recipe-react" type="number" required step="any" min="287" max="311" value="298"><small>287–311</small></label>
+</div>
+<details class="assumptions"><summary>Fixed model inputs (10)</summary>
+<dl><dt>Sand/binder and aggregate/binder</dt><dd>0 each</dd>
+<dt>Specimen diameter and aspect ratio</dt><dd>30 mm, 1</dd>
+<dt>Relative humidity and base temperature</dt><dd>90%, 20 °C</dd>
+<dt>Superplasticizer</dt><dd>0</dd>
+<dt>Additional temperature and ln(energy + 1)</dt><dd>0 each</dd>
+<dt>Slag specific surface area (dataset scale)</dt><dd>4,500</dd></dl></details>
+</form></div></aside></div>
+<section class="card table-card"><div class="card-head"><h2>Predictions by age</h2></div>
+<div class="scroll"><table><thead><tr><th>Age (days)</th><th>Current (MPa)</th><th>Starting recipe (MPa)</th><th>Range across fits (MPa)</th></tr></thead><tbody id="recipe-ages"></tbody></table></div></section>
+</section>
+<section id="performance-view" hidden aria-label="Blended cement model performance">
+<div id="performance-metrics" class="metrics" aria-live="polite"></div>
+<div class="workspace">
+<section class="card plot-card"><div class="card-head"><h2 id="performance-title">Training size and chemistry</h2><span class="legend">Random forest · test RMSE</span></div>
+<div class="plotbox" id="performance-box"><svg id="performance-plot" role="img" aria-label="Mean held-out prediction errors by training size and feature set"></svg></div>
+<div class="plot-foot perf-legend"><span>Mix and test conditions</span><span>With binder chemistry</span></div>
+<p class="strength-note" id="performance-caption"></p></section>
+<aside class="card filters"><div class="card-head"><h2>Experiment</h2></div>
+<div class="fields">
+<div class="field"><label for="experiment">Comparison</label><select id="experiment"><option value="learning">Training size and chemistry</option><option value="transfer">Learning complex blends</option></select></div>
+<div class="field"><label id="size-label" for="experiment-size">Training measurements</label><select id="experiment-size"></select></div>
+<label class="variation"><input type="checkbox" id="experiment-spread" checked> Show variation across splits</label>
+</div></aside>
+</div>
+<section class="card table-card"><div class="card-head"><h2 id="split-title">Held-out results</h2></div><div class="scroll"><table>
+<thead><tr><th>Split</th><th>Training rows</th><th>Test rows</th><th>Test papers</th><th>Mix RMSE (MPa)</th><th>With chemistry (MPa)</th><th>Error reduction (MPa)</th></tr></thead>
+<tbody id="experiment-splits"></tbody></table></div>
+<details class="benchmark-method"><summary>Benchmark data and method</summary><p id="benchmark-source"></p>
+<p>Mix inputs include five supplementary material fractions, water, aggregate and superplasticizer ratios, age, curing temperature and humidity, specimen volume and aspect ratio. The chemistry model adds binder-weighted CaO, SiO₂, Al₂O₃, Fe₂O₃, MgO and SO₃. Missing values use training-set medians.</p>
+<p>Each split reserves 20% of source papers for testing. Both models use the same training and test rows, and the test set stays fixed as training size increases within an experiment. Points show mean root-mean-square error (RMSE) in MPa. Whiskers show one sample standard deviation across splits. A positive error reduction means adding chemistry improved the prediction.</p></details></section>
+</section>
+</main>
+<dialog id="detail" aria-labelledby="detail-title"><div class="dialog-top"><span class="kicker" id="dialog-type"></span><button class="slim" id="close">Close</button></div><div id="detail-body"></div></dialog>
+<script defer src="predict.js"></script>
+<script defer src="data/blended-performance.js"></script>
+<script defer src="performance.js"></script>
+</body></html>
